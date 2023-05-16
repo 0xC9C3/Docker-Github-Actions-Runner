@@ -55,6 +55,8 @@ jobs:
           echo "Pushing the image to Docker Hub..."
           docker push "${CONTAINER_NAME}":"${VERSION}"
           docker push "${CONTAINER_NAME}":latest
+          docker push "${CONTAINER_NAME}":builder-"${VERSION}"
+          docker push "${CONTAINER_NAME}":builder-latest
       - run: |
           echo "Cleaning up..."
           rm release.json
