@@ -1,0 +1,57 @@
+name: Automatically update the image
+run-name: Updating the image
+on:
+  schedule:
+    - cron: '0 */1 * * *'
+
+env:
+  RELEASE_URL: https://api.github.com/repos/actions/runner/releases/latest
+  CONTAINER_NAME: 0xc9c3/github_actions_runner
+jobs:
+  update-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      # get release info
+      - run: |
+          echo "🔎 Getting the latest release info..."
+          curl -sSL $RELEASE_URL > release.json
+      # get version
+      - run: |
+          echo "🔎 Getting the latest version..."
+          VERSION=$(cat release.json | jq -r '.tag_name')
+          VERSION=${VERSION:1}
+          echo "📦 The latest version is $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      # get the checksum from the body
+      - run: |
+          echo "🔎 Getting the checksum..."
+          ASSET_NAME="actions-runner-linux-x64-${VERSION}.tar.gz"
+          echo $VERSION
+          echo "The asset name is $ASSET_NAME"
+          CHECKSUM_STRING_START="$ASSET_NAME <!-- BEGIN SHA linux-x64 -->"
+          CHECKSUM_STRING_END="<!-- END SHA linux-x64 -->"
+          cat release.json | jq -r '.body' | awk -v FS="($CHECKSUM_STRING_START)|($CHECKSUM_STRING_END)" '{print $2}' | sed '/^$/d' > checksum.txt
+          CHECKSUM=$(cat checksum.txt)
+          echo "The checksum is $CHECKSUM"
+          echo "CHECKSUM=$CHECKSUM" >> $GITHUB_ENV
+      - run: |
+          echo "Building the image..."
+          docker build -t 0xc9c3/github_actions_runner:"${VERSION}" \
+            --build-arg RELEASE_TAG="${VERSION}" \
+            --build-arg RELEASE_HASH="${CHECKSUM}" \
+            -f Dockerfile .
+      - run: |
+          echo "Logging into Docker Hub..."
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - run: |
+          echo "Pushing the image to Docker Hub..."
+          docker push "${CONTAINER_NAME}":"${VERSION}"
+      - run: |
+          echo "Cleaning up..."
+          rm release.json
+          rm checksum.txt
+      
+          
+        
