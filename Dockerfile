@@ -24,10 +24,16 @@ ADD entry.sh entry.sh
 
 RUN chmod +x entry.sh
 
-RUN useradd ghrunner
+RUN groupadd -g 1001 ghrunner
+
+RUN useradd -g 1001 -u 1000 ghrunner
 
 RUN chown ghrunner:ghrunner .
 
 USER ghrunner
+
+RUN mkdir /runner/config && chown ghrunner:ghrunner /runner/config
+
+RUN mkdir /runner/work && chown ghrunner:ghrunner /runner/work
 
 ENTRYPOINT ["tini", "-v", "--", "/runner/entry.sh"]

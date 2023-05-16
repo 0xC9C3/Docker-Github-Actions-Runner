@@ -39,6 +39,7 @@ jobs:
       - run: |
           echo "Building the image..."
           docker build -t 0xc9c3/github_actions_runner:"${VERSION}" \
+            -t 0xc9c3/github_actions_runner:latest \
             --build-arg RELEASE_TAG="${VERSION}" \
             --build-arg RELEASE_HASH="${CHECKSUM}" \
             -f Dockerfile .
@@ -48,6 +49,7 @@ jobs:
       - run: |
           echo "Pushing the image to Docker Hub..."
           docker push "${CONTAINER_NAME}":"${VERSION}"
+          docker push "${CONTAINER_NAME}":latest
       - run: |
           echo "Cleaning up..."
           rm release.json
