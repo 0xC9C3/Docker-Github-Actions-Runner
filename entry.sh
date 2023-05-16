@@ -20,7 +20,6 @@ if [ ! -f ".credentials" ]; then
                 --name "${RUNNER_NAME}" \
                 --work /runner/work
     # move credential files to /credentials and symlink
-    ls -la /runner/config
     mv /runner/.credentials /runner/config/.credentials
     mv /runner/.credentials_rsaparams /runner/config/.credentials_rsaparams
     mv /runner/.runner /runner/config/.runner

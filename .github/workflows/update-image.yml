@@ -11,7 +11,7 @@ env:
   CONTAINER_NAME: 0xc9c3/github_actions_runner
 jobs:
   update-image:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     steps:
       - name: checkout
         uses: actions/checkout@v3

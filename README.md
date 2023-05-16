@@ -8,6 +8,8 @@ Hourly builds are available on [Docker Hub](https://hub.docker.com/r/0xc9c3/gith
 
 The configuration is only generated once. If you want to delete the configuration your have to delete your .runner file.
 
+**Make sure that your volume is writable by the user with the UID 1000.**
+
 ### Docker
 
 ```bash
