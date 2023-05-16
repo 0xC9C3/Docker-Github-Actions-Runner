@@ -3,6 +3,8 @@ run-name: Updating the image
 on:
   schedule:
     - cron: '0 */1 * * *'
+  workflow_dispatch:
+    inputs:
 
 env:
   RELEASE_URL: https://api.github.com/repos/actions/runner/releases/latest
