@@ -13,7 +13,7 @@ if [ -z "${REPOSITORY_TOKEN}" ]; then
     exit
 fi
 
-if [ ! -f ".credentials" ]; then
+if [ ! -f "/runner/config/.credentials" ]; then
     ./config.sh --unattended \
                 --url "${REPOSITORY_URL}" \
                 --token "${REPOSITORY_TOKEN}" \
