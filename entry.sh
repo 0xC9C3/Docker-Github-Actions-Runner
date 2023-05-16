@@ -23,9 +23,10 @@ if [ ! -f ".credentials" ]; then
     mv /runner/.credentials /runner/config/.credentials
     mv /runner/.credentials_rsaparams /runner/config/.credentials_rsaparams
     mv /runner/.runner /runner/config/.runner
-    ln -s /runner/config/.credentials /runner/.credentials
-    ln -s /runner/config/.credentials_rsaparams /runner/.credentials_rsaparams
-    ln -s /runner/config/.runner /runner/.runner
 fi
+
+ln -s /runner/config/.credentials /runner/.credentials
+ln -s /runner/config/.credentials_rsaparams /runner/.credentials_rsaparams
+ln -s /runner/config/.runner /runner/.runner
 
 ./run.sh
