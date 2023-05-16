@@ -6,9 +6,11 @@ Hourly builds are available on [Docker Hub](https://hub.docker.com/r/0xc9c3/gith
 
 ## Usage
 
-The configuration is only generated once. If you want to delete the configuration your have to delete your .runner file.
+The configuration is only generated once if it does not exist.
 
-**Make sure that your volume is writable by the user with the UID 1000.**
+**If you mount the config directory, make sure that your volume is writable by the user with the UID 1000.**
+
+This image is meant as a base image. 
 
 ### Docker
 
